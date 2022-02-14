@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
+//   componentDidMount() {
+
+  //   }
+
   render() {
     const {
       name,
@@ -11,8 +15,9 @@ class Header extends React.Component {
       gravatarEmail,
     } = this.props;
 
+    console.log(this.props);
+
     const hashEmail = md5(gravatarEmail).toString();
-    console.log(hashEmail);
     return (
       <div>
         <img

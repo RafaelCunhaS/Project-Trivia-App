@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../Components/Header';
+import { fetchToken, getData } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -22,8 +24,15 @@ class Login extends React.Component {
     else this.setState({ btnDisabled: true });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
+    const { name, email } = this.state;
+
     event.preventDefault();
+    const { history, getToken, dispatchSetValue } = this.props;
+    const data = await getToken();
+    localStorage.setItem('token', data.token);
+    history.push('/pagegame');
+    dispatchSetValue({ name, email });
   }
 
   handleClick = () => {
@@ -80,10 +89,14 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetValue: (data) => dispatch(getData(data)),
+  getToken: () => dispatch(fetchToken()) });
 
 Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  getToken: PropTypes.func.isRequired,
+  dispatchSetValue: PropTypes.func.isRequired,
 };
+
+export default connect(null, mapDispatchToProps)(Login);
