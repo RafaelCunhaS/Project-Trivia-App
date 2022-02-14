@@ -1,9 +1,12 @@
-const INITIAL_STATE = {
-  tokenValue: '',
-};
+import { ADD_TOKEN } from '../actions';
+
+const INITIAL_STATE = '';
 
 const tokenReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case ADD_TOKEN:
+    return action.payload;
+
   default:
     return state;
   }
