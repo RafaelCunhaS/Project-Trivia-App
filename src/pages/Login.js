@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Header from '../Components/Header';
 
 class Login extends React.Component {
   constructor() {
@@ -35,6 +36,7 @@ class Login extends React.Component {
     const { name, email, btnDisabled } = this.state;
     return (
       <div>
+        <Header />
         <form onSubmit={ this.handleSubmit }>
           <label htmlFor="name">
             Nome:
