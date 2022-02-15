@@ -14,6 +14,7 @@ class PageGame extends React.Component {
       questions: [],
       buttons: [],
       correctAnswer: '',
+      index: 0,
     };
   }
 
@@ -40,39 +41,36 @@ class PageGame extends React.Component {
   }
 
   render() {
-    const { questions, buttons, correctAnswer } = this.state;
+    const { questions, buttons, correctAnswer, index } = this.state;
     const sorted = buttons.map((arr) => arr.sort(() => Math.random() - RANDOM));
     return (
       <main>
         <Header />
-        {questions.map((obj, index) => (
-          <div key={ obj.question }>
-            <p data-testid="question-category">{obj.category}</p>
-            <p data-testid="question-text">{obj.question}</p>
-            <div data-testid="answer-options">
-              {sorted[index].map((answer, i) => {
-                if (answer === correctAnswer[index]) {
-                  return (
-                    <button
-                      key={ answer }
-                      type="button"
-                      data-testid="correct-answer"
-                    >
-                      {answer}
-                    </button>);
-                }
-                return (
+
+        {questions.length > 0 ? console.log(buttons[index]) : null}
+        { console.log(correctAnswer[index])}
+        {questions.length > 0
+          && (
+            <div>
+              <p data-testid="question-category">{questions[index].category}</p>
+              <p data-testid="question-text">{questions[index].question}</p>
+              <div data-testid="answer-options">
+                {sorted[index].map((button, i) => (
                   <button
-                    key={ answer }
+                    data-testid={
+                     button !== correctAnswer[index]
+                     ? `wrong-answer-${i}`
+                     : 'correct-answer'
+                    }
                     type="button"
-                    data-testid={ `wrong-answer-${i}` }
+                    key={ i }
                   >
-                    {answer}
-                  </button>);
-              })}
-            </div>
-          </div>
-        ))}
+                    {button}
+                  </button>))}
+              </div>
+
+            </div>)}
+
       </main>
     );
   }
