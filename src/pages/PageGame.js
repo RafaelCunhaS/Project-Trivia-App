@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -46,9 +45,6 @@ class PageGame extends React.Component {
     return (
       <main>
         <Header />
-
-        {questions.length > 0 ? console.log(buttons[index]) : null}
-        { console.log(correctAnswer[index])}
         {questions.length > 0
           && (
             <div>
@@ -58,9 +54,9 @@ class PageGame extends React.Component {
                 {sorted[index].map((button, i) => (
                   <button
                     data-testid={
-                     button !== correctAnswer[index]
-                     ? `wrong-answer-${i}`
-                     : 'correct-answer'
+                      button !== correctAnswer[index]
+                        ? `wrong-answer-${i}`
+                        : 'correct-answer'
                     }
                     type="button"
                     key={ i }
