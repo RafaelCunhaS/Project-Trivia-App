@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../redux/actions';
+import Header from '../Components/Header';
 
 const RANDOM = 0.5;
 
@@ -43,6 +44,7 @@ class PageGame extends React.Component {
     const sorted = buttons.map((arr) => arr.sort(() => Math.random() - RANDOM));
     return (
       <main>
+        <Header />
         {questions.map((obj, index) => (
           <div key={ obj.question }>
             <p data-testid="question-category">{obj.category}</p>
