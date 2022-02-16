@@ -20,6 +20,7 @@ class PageGame extends React.Component {
       count: 30,
       nextBtn: false,
       btnDisabled: false,
+      feedbacks: [],
     };
   }
 
@@ -34,7 +35,14 @@ class PageGame extends React.Component {
       this.setState((prevState) => ({ count: prevState.count - 1 }));
     } else if (count === 0) {
       clearInterval(this.myInterval);
-      this.handleClick();
+      this.setState({
+        correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+        incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
+        nextBtn: true,
+        btnDisabled: true,
+        count: 0,
+
+      });
     }
   }
 
@@ -62,22 +70,33 @@ class PageGame extends React.Component {
       });
   }
 
-  handleClick = () => {
-    this.setState({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+  handleClick = (event) => {
+    event.persist();
+    this.setState((prevState) => ({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
       incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
       nextBtn: true,
       btnDisabled: true,
       count: 0,
-    });
+      feedbacks: [...prevState.feedbacks, event.target.innerHTML]
+      ,
+    }));
+    console.log(event.target.innerHTML);
   }
 
   handleNext = () => {
+    const MAX_LENGTH = 4;
+    const { index } = this.state;
     this.setState((prevState) => ({ index: prevState.index + 1,
       correctStyle: {},
       incorrectStyle: {},
       btnDisabled: false,
       count: 30,
     }));
+
+    if (index === MAX_LENGTH) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
   }
 
   render() {
