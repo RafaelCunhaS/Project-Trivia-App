@@ -3,6 +3,8 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+const MIN_SCORE = 3;
+
 class Feedback extends React.Component {
   render() {
     const {
@@ -21,6 +23,9 @@ class Feedback extends React.Component {
         />
         <h6 data-testid="header-player-name">{name}</h6>
         <h6 data-testid="header-score">{score}</h6>
+        <p data-testid="feedback-text">
+          { score < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
+        </p>
       </div>
     );
   }
