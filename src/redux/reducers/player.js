@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
-  console.log(action.payloadData);
   switch (action.type) {
   case GET_DATA: {
     return {

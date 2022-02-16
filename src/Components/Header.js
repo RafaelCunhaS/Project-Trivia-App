@@ -15,8 +15,6 @@ class Header extends React.Component {
       gravatarEmail,
     } = this.props;
 
-    console.log(this.props);
-
     const hashEmail = md5(gravatarEmail).toString();
     return (
       <div>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../redux/actions';
 import Header from '../Components/Header';
+import './PageGame.css';
 
 const RANDOM = 0.5;
 
@@ -14,6 +15,8 @@ class PageGame extends React.Component {
       buttons: [],
       correctAnswer: '',
       index: 0,
+      correctStyle: {},
+      incorrectStyle: {},
     };
   }
 
@@ -33,15 +36,21 @@ class PageGame extends React.Component {
         }
         this.setState({ questions: data.results,
           buttons: data.results.map((obj) => [obj.correct_answer,
-            ...obj.incorrect_answers]),
+            ...obj.incorrect_answers])
+            .map((arr) => arr.sort(() => Math.random() - RANDOM)),
           correctAnswer: data.results.map((obj) => obj.correct_answer),
         });
       });
   }
 
+  handleClick = () => {
+    this.setState({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+      incorrectStyle: { border: '3px solid rgb(255, 0, 0)' } });
+  }
+
   render() {
-    const { questions, buttons, correctAnswer, index } = this.state;
-    const sorted = buttons.map((arr) => arr.sort(() => Math.random() - RANDOM));
+    const { questions, buttons, correctAnswer, index,
+      correctStyle, incorrectStyle } = this.state;
     return (
       <main>
         <Header />
@@ -50,16 +59,19 @@ class PageGame extends React.Component {
             <div>
               <p data-testid="question-category">{questions[index].category}</p>
               <p data-testid="question-text">{questions[index].question}</p>
-              <div data-testid="answer-options">
-                {sorted[index].map((button, i) => (
+              <div className="buttons" data-testid="answer-options">
+                {buttons[index].map((button, i) => (
                   <button
                     data-testid={
                       button !== correctAnswer[index]
                         ? `wrong-answer-${i}`
                         : 'correct-answer'
                     }
+                    style={ button === correctAnswer[index]
+                      ? correctStyle : incorrectStyle }
                     type="button"
-                    key={ i }
+                    key={ button }
+                    onClick={ this.handleClick }
                   >
                     {button}
                   </button>))}
