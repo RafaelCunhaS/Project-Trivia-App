@@ -18,6 +18,8 @@ class PageGame extends React.Component {
       correctStyle: {},
       incorrectStyle: {},
       count: 30,
+      nextBtn: false,
+      btnDisabled: false,
     };
   }
 
@@ -32,6 +34,7 @@ class PageGame extends React.Component {
       this.setState((prevState) => ({ count: prevState.count - 1 }));
     } else if (count === 0) {
       clearInterval(this.myInterval);
+      this.handleClick();
     }
   }
 
@@ -61,12 +64,25 @@ class PageGame extends React.Component {
 
   handleClick = () => {
     this.setState({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
-      incorrectStyle: { border: '3px solid rgb(255, 0, 0)' } });
+      incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
+      nextBtn: true,
+      btnDisabled: true,
+      count: 0,
+    });
+  }
+
+  handleNext = () => {
+    this.setState((prevState) => ({ index: prevState.index + 1,
+      correctStyle: {},
+      incorrectStyle: {},
+      btnDisabled: false,
+      count: 30,
+    }));
   }
 
   render() {
     const { questions, buttons, correctAnswer, index,
-      correctStyle, incorrectStyle, count } = this.state;
+      correctStyle, incorrectStyle, count, nextBtn, btnDisabled } = this.state;
     return (
       <main>
         <Header />
@@ -88,12 +104,11 @@ class PageGame extends React.Component {
                     type="button"
                     key={ button }
                     onClick={ this.handleClick }
-                    disabled={ count === 0 }
+                    disabled={ btnDisabled }
                   >
                     {button}
                   </button>))}
               </div>
-
             </div>)}
         <div>
           <h1>
@@ -102,6 +117,14 @@ class PageGame extends React.Component {
             {count}
           </h1>
         </div>
+        {nextBtn && (
+          <button
+            type="button"
+            onClick={ this.handleNext }
+            data-testid="btn-next"
+          >
+            Next
+          </button>)}
       </main>
     );
   }
