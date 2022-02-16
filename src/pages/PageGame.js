@@ -17,11 +17,27 @@ class PageGame extends React.Component {
       index: 0,
       correctStyle: {},
       incorrectStyle: {},
+      count: 30,
     };
   }
 
   componentDidMount() {
     this.getData();
+    this.countdown();
+  }
+
+  timerCount = () => {
+    const { count } = this.state;
+    if (count > 0) {
+      this.setState((prevState) => ({ count: prevState.count - 1 }));
+    } else if (count === 0) {
+      clearInterval(this.myInterval);
+    }
+  }
+
+  countdown = () => {
+    const milliSeconds = 1000;
+    this.myInterval = setInterval(this.timerCount, milliSeconds);
   }
 
   getData = () => {
@@ -50,7 +66,7 @@ class PageGame extends React.Component {
 
   render() {
     const { questions, buttons, correctAnswer, index,
-      correctStyle, incorrectStyle } = this.state;
+      correctStyle, incorrectStyle, count } = this.state;
     return (
       <main>
         <Header />
@@ -72,13 +88,20 @@ class PageGame extends React.Component {
                     type="button"
                     key={ button }
                     onClick={ this.handleClick }
+                    disabled={ count === 0 }
                   >
                     {button}
                   </button>))}
               </div>
 
             </div>)}
-
+        <div>
+          <h1>
+            Timer:
+            {' '}
+            {count}
+          </h1>
+        </div>
       </main>
     );
   }
