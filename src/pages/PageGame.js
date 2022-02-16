@@ -22,6 +22,9 @@ class PageGame extends React.Component {
       count: 30,
       score: 0,
       assertions: 0,
+      nextBtn: false,
+      btnDisabled: false,
+      feedbacks: [],
     };
   }
 
@@ -36,6 +39,14 @@ class PageGame extends React.Component {
       this.setState((prevState) => ({ count: prevState.count - 1 }));
     } else if (count === 0) {
       clearInterval(this.myInterval);
+      this.setState({
+        correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+        incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
+        nextBtn: true,
+        btnDisabled: true,
+        count: 0,
+
+      });
     }
   }
 
@@ -63,7 +74,7 @@ class PageGame extends React.Component {
       });
   }
 
-  handleClick = ({ target: { id, name } }) => {
+  handleScore = ({ target: { id, name } }) => {
     const { userData } = this.props;
     const { count } = this.state;
     let valueDifficulty = 0;
@@ -82,9 +93,36 @@ class PageGame extends React.Component {
     }
 
     // this.addLocacalStorage();
+  }
 
-    this.setState({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
-      incorrectStyle: { border: '3px solid rgb(255, 0, 0)' } });
+  handleClick = (event) => {
+    event.persist();
+    this.setState((prevState) => ({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+      incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
+      nextBtn: true,
+      btnDisabled: true,
+      count: 0,
+      feedbacks: [...prevState.feedbacks, event.target.innerHTML]
+      ,
+    }));
+    console.log(event.target.innerHTML);
+    this.handleScore(event);
+  }
+
+  handleNext = () => {
+    const MAX_LENGTH = 4;
+    const { index } = this.state;
+    this.setState((prevState) => ({ index: prevState.index + 1,
+      correctStyle: {},
+      incorrectStyle: {},
+      btnDisabled: false,
+      count: 30,
+    }));
+
+    if (index === MAX_LENGTH) {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
   }
 
   // addLocacalStorage = () => {
@@ -96,7 +134,7 @@ class PageGame extends React.Component {
 
   render() {
     const { questions, buttons, correctAnswer, index,
-      correctStyle, incorrectStyle, count } = this.state;
+      correctStyle, incorrectStyle, count, nextBtn, btnDisabled } = this.state;
     return (
       <main>
         <Header />
@@ -124,12 +162,11 @@ class PageGame extends React.Component {
                         : 'correctAnswer'
                     }
                     onClick={ this.handleClick }
-                    disabled={ count === 0 }
+                    disabled={ btnDisabled }
                   >
                     {button}
                   </button>))}
               </div>
-
             </div>)}
         <div>
           <h1>
@@ -138,6 +175,14 @@ class PageGame extends React.Component {
             {count}
           </h1>
         </div>
+        {nextBtn && (
+          <button
+            type="button"
+            onClick={ this.handleNext }
+            data-testid="btn-next"
+          >
+            Next
+          </button>)}
       </main>
     );
   }
