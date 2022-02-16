@@ -1,8 +1,8 @@
-import { GET_DATA } from '../actions';
+import { GET_DATA, GET_USER_DATA } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -14,6 +14,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.payloadData.name,
       gravatarEmail: action.payloadData.email,
+    };
+  }
+  case GET_USER_DATA: {
+    return {
+      ...state,
+      assertions: state.assertions + action.payloadUserData.assertions,
+      score: state.score + action.payloadUserData.score,
     };
   }
   default:
