@@ -1,11 +1,42 @@
 import React from 'react';
+import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Feedback extends React.Component {
   render() {
+    const {
+      name,
+      score,
+      gravatarEmail,
+    } = this.props;
+
+    const hashEmail = md5(gravatarEmail).toString();
     return (
-      <h1 data-testid="feedback-text">Feedback</h1>
+      <div>
+        <img
+          data-testid="header-profile-picture"
+          src={ `https://www.gravatar.com/avatar/${hashEmail}` }
+          alt="teste"
+        />
+        <h6 data-testid="header-player-name">{name}</h6>
+        <h6 data-testid="header-score">{score}</h6>
+      </div>
     );
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  score: state.player.score,
+  gravatarEmail: state.player.gravatarEmail,
+});
+
+Feedback.propTypes = {
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+
+};
+
+export default connect(mapStateToProps)(Feedback);
