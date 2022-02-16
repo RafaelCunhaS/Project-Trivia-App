@@ -20,6 +20,7 @@ class PageGame extends React.Component {
       count: 30,
       nextBtn: false,
       btnDisabled: false,
+      array: [],
     };
   }
 
@@ -62,22 +63,26 @@ class PageGame extends React.Component {
       });
   }
 
-  handleClick = () => {
-    this.setState({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
+  handleClick = (event) => {
+    this.setState((prev) => ({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
       incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
       nextBtn: true,
       btnDisabled: true,
-      count: 0,
-    });
+      // count: 0,
+      array: [...prev.array, event.target.innerHTML],
+    }));
+    clearInterval(this.myInterval);
   }
 
-  handleNext = () => {
+  handleNext = ({ target }) => {
     this.setState((prevState) => ({ index: prevState.index + 1,
       correctStyle: {},
       incorrectStyle: {},
       btnDisabled: false,
       count: 30,
     }));
+    this.countdown();
+    console.log(target.innerHTML);
   }
 
   render() {
