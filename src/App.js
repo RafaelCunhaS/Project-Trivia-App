@@ -5,6 +5,7 @@ import './App.css';
 import Login from './pages/Login';
 import PageGame from './pages/PageGame';
 import Settings from './pages/Settings';
+import Feedback from './pages/Feedback';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Route exact path="/" component={ Login } />
       <Route exact path="/pagegame" component={ PageGame } />
       <Route exact path="/settings" component={ Settings } />
+      <Route exact path="/feedback" component={ Feedback } />
     </Switch>
   );
 }
