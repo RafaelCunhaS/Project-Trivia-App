@@ -80,7 +80,6 @@ class PageGame extends React.Component {
       feedbacks: [...prevState.feedbacks, event.target.innerHTML]
       ,
     }));
-    console.log(event.target.innerHTML);
   }
 
   handleNext = () => {
