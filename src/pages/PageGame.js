@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../redux/actions';
+
 import Header from '../Components/Header';
 import './PageGame.css';
 
@@ -144,6 +145,7 @@ class PageGame extends React.Component {
           >
             Next
           </button>)}
+
       </main>
     );
   }

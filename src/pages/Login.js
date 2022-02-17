@@ -84,6 +84,7 @@ class Login extends React.Component {
         >
           Configurações
         </button>
+
       </div>
     );
   }
