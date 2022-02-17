@@ -6,14 +6,11 @@ export const addToken = (payload) => ({
   type: ADD_TOKEN,
   payload,
 });
-export const getData = (payloadData) => {
-  console.log('chamou getData');
-  console.log(payloadData);
-  return {
-    type: GET_DATA,
-    payloadData,
-  };
-};
+
+export const getData = (payloadData) => ({
+  type: GET_DATA,
+  payloadData,
+});
 
 export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
   .then((response) => response.json())
@@ -23,11 +20,7 @@ export const fetchToken = () => (dispatch) => fetch('https://opentdb.com/api_tok
   })
   .catch((error) => console.log(error));
 
-export const getUserData = (payloadUserData) => {
-  console.log('chosldfka');
-  console.log(payloadUserData);
-  return {
-    type: GET_USER_DATA,
-    payloadUserData,
-  };
-};
+export const getUserData = (payloadUserData) => ({
+  type: GET_USER_DATA,
+  payloadUserData,
+});
