@@ -16,6 +16,7 @@ class Feedback extends React.Component {
         name,
         score,
         gravatarEmail,
+        assertions,
       } = this.props;
 
       const hashEmail = md5(gravatarEmail).toString();
@@ -29,7 +30,7 @@ class Feedback extends React.Component {
           <h6 data-testid="header-player-name">{name}</h6>
           <h6 data-testid="header-score">{score}</h6>
           <p data-testid="feedback-text">
-            { score < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
+            { assertions < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
           </p>
           <button
             data-testid="btn-play-again"
@@ -47,6 +48,7 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   score: state.player.score,
   gravatarEmail: state.player.gravatarEmail,
+  assertions: state.player.assertions,
 });
 
 Feedback.propTypes = {
@@ -54,7 +56,7 @@ Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

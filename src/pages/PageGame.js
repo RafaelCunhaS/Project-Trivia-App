@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchToken } from '../redux/actions';
+import { fetchToken, getUserData } from '../redux/actions';
 import Header from '../Components/Header';
 import './PageGame.css';
 
 const RANDOM = 0.5;
+const dez = 10;
+const tres = 3;
 
 class PageGame extends React.Component {
   constructor() {
@@ -18,6 +20,8 @@ class PageGame extends React.Component {
       correctStyle: {},
       incorrectStyle: {},
       count: 30,
+      score: 0,
+      assertions: 0,
       nextBtn: false,
       btnDisabled: false,
       feedbacks: [],
@@ -70,6 +74,27 @@ class PageGame extends React.Component {
       });
   }
 
+  handleScore = ({ target: { id, name } }) => {
+    const { userData } = this.props;
+    const { count } = this.state;
+    let valueDifficulty = 0;
+    if (id === 'hard') valueDifficulty = tres;
+    if (id === 'medium') valueDifficulty = 2;
+    if (id === 'easy') valueDifficulty = 1;
+
+    if (name === 'correctAnswer') {
+      this.setState((prevState) => ({
+        score: prevState.score + dez + count * valueDifficulty,
+        assertions: prevState.assertions + 1,
+      }), () => {
+        const { score, assertions } = this.state;
+        userData({ score, assertions });
+      });
+    }
+
+    // this.addLocacalStorage();
+  }
+
   handleClick = (event) => {
     event.persist();
     this.setState((prevState) => ({ correctStyle: { border: '3px solid rgb(6, 240, 15)' },
@@ -80,6 +105,7 @@ class PageGame extends React.Component {
       feedbacks: [...prevState.feedbacks, event.target.innerHTML]
       ,
     }));
+    this.handleScore(event);
   }
 
   handleNext = () => {
@@ -97,6 +123,13 @@ class PageGame extends React.Component {
       history.push('/feedback');
     }
   }
+
+  // addLocacalStorage = () => {
+  //   const { score, assertions } = this.state;
+  //   const user = JSON.parse(localStorage.getItem('user'));
+  //   localStorage.setItem('user', JSON.stringify({ ...user, score }));
+  //   // localStorage.setItem('user', JSON.stringify({ ...user, assertions }));
+  // }
 
   render() {
     const { questions, buttons, correctAnswer, index,
@@ -121,6 +154,12 @@ class PageGame extends React.Component {
                       ? correctStyle : incorrectStyle }
                     type="button"
                     key={ button }
+                    id={ questions[index].difficulty }
+                    name={
+                      button !== correctAnswer[index]
+                        ? 'wrongAnswer'
+                        : 'correctAnswer'
+                    }
                     onClick={ this.handleClick }
                     disabled={ btnDisabled }
                   >
@@ -154,6 +193,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchToken()),
+  userData: (payload) => dispatch(getUserData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageGame);
@@ -161,4 +201,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(PageGame);
 PageGame.propTypes = {
   token: PropTypes.string,
   getToken: PropTypes.func,
+  useData: PropTypes.func,
 }.isRequired;
