@@ -13,14 +13,16 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       name: action.payloadData.name,
+      assertions: 0,
+      score: 0,
       gravatarEmail: action.payloadData.email,
     };
   }
   case GET_USER_DATA: {
     return {
       ...state,
-      assertions: state.assertions + action.payloadUserData.assertions,
-      score: state.score + action.payloadUserData.score,
+      assertions: action.payloadUserData.assertions,
+      score: action.payloadUserData.score,
     };
   }
   default:
