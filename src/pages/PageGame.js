@@ -83,8 +83,6 @@ class PageGame extends React.Component {
         userData({ score, assertions });
       });
     }
-
-    // this.addLocacalStorage();
   }
 
   handleClick = (event) => {
