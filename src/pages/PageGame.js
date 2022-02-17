@@ -183,6 +183,7 @@ class PageGame extends React.Component {
           >
             Next
           </button>)}
+
       </main>
     );
   }
