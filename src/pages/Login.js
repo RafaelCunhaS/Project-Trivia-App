@@ -31,6 +31,7 @@ class Login extends React.Component {
     const { history, getToken, dispatchSetValue } = this.props;
     const data = await getToken();
     localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify({ name, email }));
     history.push('/pagegame');
     dispatchSetValue({ name, email });
   }
