@@ -25,6 +25,7 @@ class Header extends React.Component {
         />
         <h6 data-testid="header-player-name">{name}</h6>
         <h6 data-testid="header-score">{score}</h6>
+
       </div>
     );
   }
