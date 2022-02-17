@@ -1,9 +1,11 @@
 import React from 'react';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchToken, getUserData } from '../redux/actions';
 import Header from '../Components/Header';
 import './PageGame.css';
+import { setRanking } from '../Services/rankingData';
 
 const RANDOM = 0.5;
 const dez = 10;
@@ -106,6 +108,13 @@ class PageGame extends React.Component {
     }));
 
     if (index === MAX_LENGTH) {
+      const { gravatarEmail, name, score } = this.props;
+      const hashEmail = md5(gravatarEmail).toString();
+      setRanking({
+        name,
+        score,
+        picture: `https://www.gravatar.com/avatar/${hashEmail}`,
+      });
       const { history } = this.props;
       history.push('/feedback');
     }
@@ -177,6 +186,9 @@ class PageGame extends React.Component {
 
 const mapStateToProps = (state) => ({
   token: state.token,
+  name: state.player.name,
+  score: state.player.score,
+  gravatarEmail: state.player.gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
-//   componentDidMount() {
-
-  //   }
-
   render() {
     const {
       name,
@@ -25,7 +21,6 @@ class Header extends React.Component {
         />
         <h6 data-testid="header-player-name">{name}</h6>
         <h6 data-testid="header-score">{score}</h6>
-
       </div>
     );
   }
@@ -41,7 +36,6 @@ Header.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
-
 };
 
 export default connect(mapStateToProps)(Header);
