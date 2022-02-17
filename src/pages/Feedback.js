@@ -37,6 +37,8 @@ class Feedback extends React.Component {
           <p data-testid="feedback-text">
             { assertions < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
           </p>
+          <span data-testid="feedback-total-score">{score}</span>
+          <span data-testid="feedback-total-question">{assertions}</span>
           <button
             data-testid="btn-play-again"
             type="button"
