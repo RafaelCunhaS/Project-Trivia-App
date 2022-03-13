@@ -29,7 +29,7 @@ class Feedback extends React.Component {
             { assertions < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
           </span>
           <span className="feedback">{`Score: ${score}`}</span>
-          <span className="feedback">{`Assertions: ${assertions}`}</span>
+          <span className="feedback">{`Correct answers: ${assertions}`}</span>
           <button
             data-testid="btn-play-again"
             type="button"
