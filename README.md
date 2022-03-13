@@ -13,3 +13,5 @@ With the App running the user is able to:
   - Adjust the settings of the game on the settings page.
 
   ### Project Preview
+  
+  ![ezgif com-gif-maker](https://user-images.githubusercontent.com/88805423/158074507-6b888721-ebe9-4751-832f-b9f273ed1e55.gif)
