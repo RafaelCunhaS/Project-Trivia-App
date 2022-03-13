@@ -1,0 +1,20 @@
+#settings-title {
+  font-size: 2.4rem;
+}
+
+.settings-label {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.settings-select {
+  margin-left: 0.5rem;
+  background-color: #cfe7e4;
+  border: none;
+  border-bottom: 0.3rem solid #394e4a;
+  height: 2rem;
+}
+
+.settings-select:focus {
+  outline: none;
+}

@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import { fetchToken, getUserData } from '../redux/actions';
 import Header from '../Components/Header';
 import './PageGame.css';
-import { setRanking } from '../Services/rankingData';
+import { getConfig, setRanking } from '../Services/localStorage';
 
 const RANDOM = 0.5;
-const dez = 10;
-const tres = 3;
+const CALCULATION_SCORE_HELPER = 10;
+const HARD_DIFFICULTY = 3;
+const MAX_LENGTH = 4;
 
 class PageGame extends React.Component {
   constructor() {
@@ -52,33 +53,45 @@ class PageGame extends React.Component {
   getData = () => {
     const RESPOSE_CODE = 3;
     const { token, getToken } = this.props;
-    fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+    const config = getConfig();
+    const URL = this.getURL(config.category, config.difficulty, config.type);
+    console.log(URL);
+    fetch(`${URL}&token=${token}`)
       .then((response) => response.json())
       .then(async (data) => {
         if (data.response_code === RESPOSE_CODE) {
           await getToken();
           this.getData();
+        } else {
+          this.setState({ questions: data.results,
+            buttons: data.results.map((obj) => [obj.correct_answer,
+              ...obj.incorrect_answers])
+              .map((arr) => arr.sort(() => Math.random() - RANDOM)),
+            correctAnswer: data.results.map((obj) => obj.correct_answer),
+          });
         }
-        this.setState({ questions: data.results,
-          buttons: data.results.map((obj) => [obj.correct_answer,
-            ...obj.incorrect_answers])
-            .map((arr) => arr.sort(() => Math.random() - RANDOM)),
-          correctAnswer: data.results.map((obj) => obj.correct_answer),
-        });
       });
+  }
+
+  getURL = (category, difficulty, type) => {
+    let URL = 'https://opentdb.com/api.php?amount=5';
+    if (category !== 'All') URL += `&category=${category}`;
+    if (difficulty !== 'All') URL += `&dificulty=${difficulty}`;
+    if (type !== 'All') URL += `&type=${type}`;
+    return URL;
   }
 
   handleScore = ({ target: { id, name } }) => {
     const { userData } = this.props;
     const { count } = this.state;
     let valueDifficulty = 0;
-    if (id === 'hard') valueDifficulty = tres;
+    if (id === 'hard') valueDifficulty = HARD_DIFFICULTY;
     if (id === 'medium') valueDifficulty = 2;
     if (id === 'easy') valueDifficulty = 1;
 
     if (name === 'correctAnswer') {
       this.setState((prevState) => ({
-        score: prevState.score + dez + count * valueDifficulty,
+        score: prevState.score + CALCULATION_SCORE_HELPER + count * valueDifficulty,
         assertions: prevState.assertions + 1,
       }), () => {
         const { score, assertions } = this.state;
@@ -92,21 +105,13 @@ class PageGame extends React.Component {
       incorrectStyle: { border: '3px solid rgb(255, 0, 0)' },
       nextBtn: true,
       btnDisabled: true,
-      count: 0,
     }));
+    clearInterval(this.myInterval);
     if (event) this.handleScore(event);
   }
 
   handleNext = () => {
-    const MAX_LENGTH = 4;
     const { index } = this.state;
-    this.setState((prevState) => ({ index: prevState.index + 1,
-      correctStyle: {},
-      incorrectStyle: {},
-      btnDisabled: false,
-      count: 30,
-    }));
-
     if (index === MAX_LENGTH) {
       const { gravatarEmail, name, score } = this.props;
       const hashEmail = md5(gravatarEmail).toString();
@@ -118,34 +123,37 @@ class PageGame extends React.Component {
       const { history } = this.props;
       history.push('/feedback');
     }
-  }
 
-  // addLocacalStorage = () => {
-  //   const { score, assertions } = this.state;
-  //   const user = JSON.parse(localStorage.getItem('user'));
-  //   localStorage.setItem('user', JSON.stringify({ ...user, score }));
-  //   // localStorage.setItem('user', JSON.stringify({ ...user, assertions }));
-  // }
+    this.setState((prevState) => ({ index: prevState.index + 1,
+      correctStyle: {},
+      incorrectStyle: {},
+      btnDisabled: false,
+      count: 30,
+      nextBtn: false,
+    }));
+    this.countdown();
+  }
 
   render() {
     const { questions, buttons, correctAnswer, index,
       correctStyle, incorrectStyle, count, nextBtn, btnDisabled } = this.state;
     return (
-      <main>
+      <main className="container gamepage-container">
         <Header />
         {questions.length > 0
           && (
-            <div>
-              <p data-testid="question-category">{questions[index].category}</p>
-              <p data-testid="question-text">{questions[index].question}</p>
-              <div className="buttons" data-testid="answer-options">
-                {buttons[index].map((button, i) => (
+            <div className="gamepage">
+              <h3>
+                {questions[index].category
+                  .replace(/&quot;/g, '"').replace(/&#039;/g, '\'')}
+              </h3>
+              <p className="question-text">
+                {questions[index].question
+                  .replace(/&quot;/g, '"').replace(/&#039;/g, '\'')}
+              </p>
+              <div className="answer-options">
+                {buttons[index].map((button) => (
                   <button
-                    data-testid={
-                      button !== correctAnswer[index]
-                        ? `wrong-answer-${i}`
-                        : 'correct-answer'
-                    }
                     style={ button === correctAnswer[index]
                       ? correctStyle : incorrectStyle }
                     type="button"
@@ -158,8 +166,9 @@ class PageGame extends React.Component {
                     }
                     onClick={ this.handleClick }
                     disabled={ btnDisabled }
+                    className="answer"
                   >
-                    {button}
+                    {button.replace(/&quot;/g, '"').replace(/&#039;/g, '\'')}
                   </button>))}
               </div>
             </div>)}
@@ -175,6 +184,7 @@ class PageGame extends React.Component {
             type="button"
             onClick={ this.handleNext }
             data-testid="btn-next"
+            className="btns"
           >
             Next
           </button>)}

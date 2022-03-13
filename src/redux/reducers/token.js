@@ -6,7 +6,6 @@ const tokenReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_TOKEN:
     return action.payload;
-
   default:
     return state;
   }

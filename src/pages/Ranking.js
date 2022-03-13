@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getRanking } from '../Services/rankingData';
+import { getRanking } from '../Services/localStorage';
+import './Ranking.css';
 
 class Ranking extends React.Component {
   constructor() {
@@ -26,19 +27,18 @@ class Ranking extends React.Component {
   render() {
     const { arrayScore } = this.state;
     return (
-      <div>
-
+      <div className="ranking-container">
         <h1 data-testid="ranking-title">Ranking page</h1>
         <button
-          data-testid="btn-go-home"
           type="button"
           onClick={ this.btnRanking }
+          className="btns"
         >
           Home
         </button>
-        <section>
+        <section className="players">
           {arrayScore.map((player, index) => (
-            <div key={ player.name }>
+            <div key={ player.name } className="player">
               <img alt="foto-player" src={ player.picture } />
               <p data-testid={ `player-name-${index}` }>{player.name}</p>
               <p data-testid={ `player-score-${index}` }>{player.score}</p>

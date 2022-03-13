@@ -1,4 +1,4 @@
-import { GET_DATA, GET_USER_DATA } from '../actions';
+import { GET_DATA, GET_USER_DATA, RESET_INFO } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -12,19 +12,21 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   case GET_DATA: {
     return {
       ...state,
-      name: action.payloadData.name,
+      name: action.payload.name,
       assertions: 0,
       score: 0,
-      gravatarEmail: action.payloadData.email,
+      gravatarEmail: action.payload.email,
     };
   }
   case GET_USER_DATA: {
     return {
       ...state,
-      assertions: action.payloadUserData.assertions,
-      score: action.payloadUserData.score,
+      assertions: action.payload.assertions,
+      score: action.payload.score,
     };
   }
+  case RESET_INFO:
+    return INITIAL_STATE;
   default:
     return state;
   }

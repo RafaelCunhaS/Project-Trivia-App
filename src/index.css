@@ -5,6 +5,49 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #334240;
+  font-size: 1.2rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btns {
+  background-color: #38a863;
+  border: none;
+  color: white;
+  padding: 0.7rem 1px;
+  text-align: center;
+  width: 10rem;
+  text-decoration: none;
+  font-size: 1.2rem;
+  border-radius: 7px;
+  margin-top: 1rem;
+}
+
+.btns:hover {
+  background-color: #2a9954;
+}
+
+.btns:active {
+  transform: translateY(2px);
+}
+
+.btns:disabled {
+  background-color: #808080;
+  cursor: not-allowed;
 }
 
 code {
