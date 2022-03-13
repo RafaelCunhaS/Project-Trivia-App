@@ -1,13 +1,17 @@
 import React from 'react';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../Components/Header';
+import { resetInfo, getUserData } from '../redux/actions';
+import './Feedback.css';
 
 const MIN_SCORE = 3;
 
 class Feedback extends React.Component {
     buttonPlayAgin = () => {
-      const { history } = this.props;
+      const { history, updateData, updateGame, score } = this.props;
+      updateData(score);
+      updateGame();
       history.push('/');
     }
 
@@ -17,32 +21,20 @@ class Feedback extends React.Component {
     };
 
     render() {
-      const {
-        name,
-        score,
-        gravatarEmail,
-        assertions,
-      } = this.props;
-
-      const hashEmail = md5(gravatarEmail).toString();
+      const { score, assertions } = this.props;
       return (
-        <div>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${hashEmail}` }
-            alt="teste"
-          />
-          <h6 data-testid="header-player-name">{name}</h6>
-          <h6 data-testid="header-score">{score}</h6>
-          <p data-testid="feedback-text">
+        <div className="container">
+          <Header />
+          <span className="feedback">
             { assertions < MIN_SCORE ? 'Could be better...' : 'Well Done!' }
-          </p>
-          <span data-testid="feedback-total-score">{score}</span>
-          <span data-testid="feedback-total-question">{assertions}</span>
+          </span>
+          <span className="feedback">{`Score: ${score}`}</span>
+          <span className="feedback">{`Assertions: ${assertions}`}</span>
           <button
             data-testid="btn-play-again"
             type="button"
             onClick={ this.buttonPlayAgin }
+            className="btns"
           >
             Play Again
           </button>
@@ -51,6 +43,7 @@ class Feedback extends React.Component {
             data-testid="btn-ranking"
             type="button"
             onClick={ this.btnRanking }
+            className="btns"
           >
             Ranking
           </button>
@@ -60,18 +53,21 @@ class Feedback extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.player.name,
   score: state.player.score,
-  gravatarEmail: state.player.gravatarEmail,
   assertions: state.player.assertions,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  updateData: (payload) => dispatch(getUserData(payload)),
+  updateGame: () => dispatch(resetInfo()),
+});
+
 Feedback.propTypes = {
-  name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   assertions: PropTypes.number.isRequired,
+  updateData: PropTypes.func.isRequired,
+  updateGame: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
