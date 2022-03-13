@@ -55,7 +55,6 @@ class PageGame extends React.Component {
     const { token, getToken } = this.props;
     const config = getConfig();
     const URL = this.getURL(config.category, config.difficulty, config.type);
-    console.log(URL);
     fetch(`${URL}&token=${token}`)
       .then((response) => response.json())
       .then(async (data) => {
