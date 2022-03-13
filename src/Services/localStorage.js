@@ -1,8 +1,8 @@
 if (!JSON.parse(localStorage.getItem('config'))) {
   localStorage.setItem('config', JSON.stringify({
-    category: 'Todas',
-    dificulty: 'Todas',
-    type: 'Todos',
+    category: 'All',
+    dificulty: 'All',
+    type: 'All',
   }));
 }
 
