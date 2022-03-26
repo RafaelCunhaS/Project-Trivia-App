@@ -1,6 +1,6 @@
 ## Triva App
 
-Front-end group Project developed while studying at Trybe, a web-development school.
+Front-end group Project developed with <a href="https://github.com/DanielCastroAlves"> @DanielCastroAlves</a>, <a href="https://github.com/Phillipe153"> @Phillipe153</a> and <a href="https://github.com/Cleitonsub"> @Cleitonsub</a> while studying at Trybe, a web-development school.
 
 The project was developed in a group following the demands of a __Kanban__ board. It was made with the use of __ReactJS__ and we had the opportunity to improve our skills on __Redux__ by managing the states of the App on it.
 
